@@ -1,4 +1,4 @@
-# DES Lignin Simulation Model
+# DES Lignin Simulation Tool
 
 This repository contains a script that simulates the decomposition of Milled Wood Lignin (MWL) into Deep Eutectic Solvent Lignin (DESL) fragments. The script also computes various molecular characteristics for both the MWL and DESL structures, including molecular weight, functional groups, and poly dispersity index (PDI). Additionally, it provides molecular visualizations to aid in understanding the decomposition process.
 Features
