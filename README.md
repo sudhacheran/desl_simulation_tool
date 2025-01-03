@@ -79,12 +79,10 @@ Functional group                                 : {'ether': 0, 'carbonyl': 6, '
 Poly dispersity index (PDI)                      : 1.6
 
 **Visualization:**
-The script also generates and displays a grid image of the MWL and DESL molecular structures.
-Contributing
+The script also generates and displays a grid image of the MWL and DESL fragments molecular structures.
 
 ![1735865819136](image/README/1735865819136.png)
 
 <hr/>
 Feel free to fork this repository, submit issues, or send pull requests to improve the simulation and the overall functionality of the script.
 
-License
