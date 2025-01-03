@@ -36,7 +36,7 @@ This will display the molecular characteristics of both MWL and DESL, as well as
 
 **Example Output**
 
-### DES Lignin : Simulation Model
+### DES Lignin : Simulation Tool
 
 #### INPUT
 
