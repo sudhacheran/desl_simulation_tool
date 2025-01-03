@@ -1,15 +1,9 @@
 from rdkit import Chem
-from rdkit.Chem import AllChem, Descriptors, Draw
-from rdkit.Chem.Draw import IPythonConsole
-from rdkit.Chem.Draw import MolDrawing, DrawingOptions
+from rdkit.Chem import Descriptors
 import random
 import pandas as pd
 from collections import Counter
-
 random.seed(10)
-
-# Set default molecular image size for IPython Console
-IPythonConsole.molSize = 500, 500
 
 
 def find_functional_groups_counts(molsmile, *fntype):
@@ -270,16 +264,3 @@ def calculate_molecular_weight(smiles):
         return Descriptors.ExactMolWt(mol)
     else:
         return None
-
-
-# Data processing for CSV input/output
-df = pd.read_csv("Book1.csv")
-single_column_df = pd.DataFrame(df.values.flatten(), columns=['Combined'])
-cleaned_df = single_column_df.drop_duplicates().dropna()
-cleaned_df.reset_index(drop=True, inplace=True)
-
-# Apply molecular weight calculation and save to new CSV
-cleaned_df['MolWt'] = cleaned_df['Combined'].apply(calculate_molecular_weight)
-cleaned_df.to_csv("DESL_structures3.csv", index=False)
-
-print(cleaned_df)
