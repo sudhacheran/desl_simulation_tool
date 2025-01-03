@@ -10,6 +10,7 @@ Features
 **Visualization:** Draws molecular structures of MWL and DESL using RDKit.
 
 ## **Requirements**
+
 Python 3.x
 Required libraries:
 rdkit: For molecular manipulation and visualization.
@@ -19,6 +20,7 @@ To install the required libraries, you can use pip:
 pip install -r requirements.txt
 
 ## **Script Overview:**
+
 The script begins by configuring the MWL structure in SMILES format.
 It then computes important molecular characteristics such as molecular weight, functional group counts, and poly dispersity index (PDI) for the MWL structure.
 The script simulates the decomposition of MWL into DESL fragments and calculates properties of the fragments.
@@ -42,42 +44,47 @@ Visualization of MWL and DESL structures displayed as a grid image.
 
 **Example Output**
 
-Input:
-SMILES string as input for the MWL structure:
-OC=1C=CC(=CC1OC)C(O)C(OC=2C=CC(=CC2OC)C(O)C(OC=3C=CC(=CC3OC)C(O)C(OC=4C=CC(=CC4OC)C(O)C(OC=5C=CC(=CC5OC)C(O)C(OC=6C=CC(=CC6OC)C7OCC8C(OCC78)C9=CC(OC)=C%10OC(C%11=CC(OC)=C%12OC(C=%13C=CC(O)=C(OC)C%13)C(C%12=C%11)CO)C(OC%14=C(OC)C=C(C=C%14C%10=C9)C%15OCC%16C(OCC%15%16)C%17=CC(OC)=C%18OC(C=%19C=CC(OC(CO)C(O)C=%20C=CC(O)=C(OC)C%20)=C(OC)C%19)C(C%18=C%17)CO)CO)CO)CO)CO)CO)CO
+### DES Lignin : Simulation Model
 
-Output:
-After running the script, the output will display information such as:
-DES Lignin : Simulation Model
-=============================
+#### INPUT
 
-INPUT
-======
-Molecular structure of MWL (SMILES) :
-OC=1C=CC(=CC1OC)C(O)C(OC=2C=CC(=CC2OC)C(O)C(OC=3C=CC(=CC3OC)C(O)C(OC=4C=CC(=CC4OC)C(O)C(OC=5C=CC(=CC5OC)C(O)C(OC=6C=CC(=CC6OC)C7OCC8C(OCC78)C9=CC(OC)=C%10OC(C%11=CC(OC)=C%12OC(C=%13C=CC(O)=C(OC)C%13)C(C%12=C%11)CO)C(OC%14=C(OC)C=C(C=C%14C%10=C9)C%15OCC%16C(OCC%15%16)C%17=CC(OC)=C%18OC(C=%19C=CC(OC(CO)C(O)C=%20C=CC(O)=C(OC)C%20)=C(OC)C%19)C(C%18=C%17)CO)CO)CO)CO)CO)CO)CO
+Molecular structure of MWL (SMILES) :   
 
-Molecular weight (g/mol)           : 3520
-Functional group                   : {'phenolic': 6, 'ether': 10}
-Poly dispersity index (PDI)        : 2.1
+COc1cc(C(O)C(CO)Oc2ccc(C(O)C(CO)Oc3ccc(C(O)C(CO)Oc4ccc(C(O)C(CO)Oc5ccc(C(O)C(CO)Oc6ccc(C7OCC8C(c9cc(OC)c%10c(c9)-c9cc(C%11OCC%12C(c%13cc(OC)c%14c(c%13)C(CO)C(c%13ccc(OC(CO)C(O)c%15ccc(O)c(OC)c%15)c(OC)c%13)O%14)OCC%11%12)cc(OC)c9OC(CO)C(c9cc(OC)c%11c(c9)C(CO)C(c9ccc(O)c(OC)c9)O%11)O%10)OCC78)cc6OC)cc5OC)cc4OC)cc3OC)cc2OC)ccc1O
 
-OUTPUT
-======
+Molecular weight (g/mol)           : 2424
 
-Number of fragments (DESL Structures)  : 3
-	OC=1C=CC(=CC1OC)C(O)
-	OC=2C=CC(=CC2OC)C(O)
-	OC=3C=CC(=CC3OC)C(O)
+Functional group                   : {'ether': 10, 'carbonyl': 0, 'methoxy': 13, 'phenolicOH': 3, 'aliphaticOH_secondary': 6, 'aliphaticOH_primary': 9, 'cinnamyl_alcohol': 0}
 
-Total Molecular weight (g/mol) of all fragments : 980
-Functional group                                 : {'phenolic': 2, 'ether': 4}
-Poly dispersity index (PDI)                      : 1.5
+Poly dispersity index (PDI)        : 1.0
+
+#### OUTPUT
+
+Number of fragments  : 8   
+
+Molecular structure of DESL fragments (SMILES)
+COc1cc(CC(=O)CO)ccc1O
+COc1cc(CC(=O)CO)ccc1O
+COc1cc(CC(=O)CO)ccc1O
+COc1cc(CC(C)=O)ccc1O
+COc1cc(CC(=O)CO)ccc1O
+COc1cc(CC(=O)CO)ccc1O
+COc1cc(CC(CO)c2cc(CCCO)cc(OC)c2O)ccc1O
+COc1cc(CC(C)c2cc(C3OCC4C(c5cc(OC)c(O)c(-c6cc(C7OCC8C(c9ccc(O)c(OC)c9)OCC78)cc(OC)c6O)c5)OCC34)cc(OC)c2O)ccc1O
+
+Total Molecular weight (g/mol) of all fragments : 2400
+
+Functional group                                 : {'ether': 0, 'carbonyl': 6, 'methoxy': 13, 'phenolicOH': 13, 'aliphaticOH_secondary': 0, 'aliphaticOH_primary': 7, 'cinnamyl_alcohol': 0}
+
+Poly dispersity index (PDI)                      : 1.6
 
 **Visualization:**
 The script also generates and displays a grid image of the MWL and DESL molecular structures.
 Contributing
 
+![1735865819136](image/README/1735865819136.png)
+
 <hr/>
 Feel free to fork this repository, submit issues, or send pull requests to improve the simulation and the overall functionality of the script.
 
 License
-
