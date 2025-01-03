@@ -5,6 +5,41 @@ import pandas as pd
 from collections import Counter
 random.seed(10)
 
+"""
+This script simulates the decomposition of Milled Wood Lignin (MWL) into Deep Eutectic Solvent Lignin (DESL) fragments 
+and calculates various molecular characteristics for both the MWL and DESL structures. 
+
+Key functionalities:
+1. **SMILES Representation**: Configures MWL structure using its SMILES representation.
+2. **Molecular Characteristics**: Computes molecular weight, functional group counts, and poly dispersity index (PDI) for both the MWL and DESL structures.
+3. **DESL Simulation**: Simulates the decomposition of MWL into DESL fragments using the `simulate_DES_deployermization` function.
+
+Imports:
+- `rdkit`: Used for manipulating molecular structures (SMILES, molecular weight, etc.).
+- `utils.desl_simulation`: Contains custom functions for finding functional group counts, calculating PDI, and simulating the decomposition of MWL.
+
+This script is designed to help in the analysis and visualization of the molecular transformations involved in DESL formation from MWL.
+
+Author: Sudha Eswaran
+Date: 03/15/2024
+"""
+
+
+def simulate_DES_deployermization(smile, ethercleavage):
+    """
+    Simulates the decomposition of a molecule by cleaving C-O-C bonds and generating ketones.
+
+    Args:
+        smile (str): The SMILES string of the molecule to simulate.
+        ethercleavage (float): The percentage of C-O-C bonds to cleave.
+
+    Returns:
+        str: The SMILES representation of the decomposed and modified molecule.
+    """
+    mol = Chem.MolFromSmiles(smile)
+    mols = fragment(mol, ethercleavage)
+    return generate_ketones(mols)
+
 
 def find_functional_groups_counts(molsmile, *fntype):
     """
@@ -185,22 +220,6 @@ def generate_ketones(mols):
                 mod_mol2 = em1.GetMol()
         upd_mol_list.append(Chem.MolToSmiles(mod_mol2))
     return ".".join(upd_mol_list)
-
-
-def simulate_DES_deployermization(smile, ethercleavage):
-    """
-    Simulates the decomposition of a molecule by cleaving C-O-C bonds and generating ketones.
-
-    Args:
-        smile (str): The SMILES string of the molecule to simulate.
-        ethercleavage (float): The percentage of C-O-C bonds to cleave.
-
-    Returns:
-        str: The SMILES representation of the decomposed and modified molecule.
-    """
-    mol = Chem.MolFromSmiles(smile)
-    mols = fragment(mol, ethercleavage)
-    return generate_ketones(mols)
 
 
 def calculate_pdi(smile):
