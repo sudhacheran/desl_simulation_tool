@@ -2,3 +2,6 @@ rdkit
 notebook
 ipykernel
 pandas
+matplotlib
+scikit-learn
+seaborn

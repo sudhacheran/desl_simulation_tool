@@ -20,8 +20,49 @@ Required libraries:
 To install the required libraries, you can use pip:
 pip install -r requirements.txt
 
+
+
+**Environment Setup (Recommended):**
+
+Before running the notebook or scripts, set up your environment using the provided setup script:
+
+```bash
+bash setup.sh
+```
+
+This will create a virtual environment, activate it, and install all required dependencies automatically.
+
+---
+
 **Running the script:**
+
 You can use the attached `desl-simulation.ipynb` Jupyter Notebook to run the script interactively. The notebook allows you to execute the script step-by-step in a more interactive environment.
+
+**How to start the Jupyter Notebook:**
+
+
+1. Activate the virtual environment (if not already active):
+   - If you just ran `bash setup.sh` in your current terminal, the environment is already active and you can skip this step.
+   - If you open a new terminal or restart your computer, activate the environment before running Python or Jupyter commands:
+     - On macOS/Linux:
+       ```bash
+       source venv/bin/activate
+       ```
+     - On Windows (Command Prompt):
+       ```cmd
+       venv\Scripts\activate
+       ```
+     - On Windows (PowerShell):
+       ```powershell
+       venv\Scripts\Activate.ps1
+       ```
+
+2. Start Jupyter Notebook:
+   ```bash
+   jupyter notebook
+   ```
+   This will open the Jupyter interface in your web browser. Open `desl-simulation.ipynb` to begin.
+
 Alternatively, you can run the script directly in a Python environment by executing: `python your_script.py`
 This will display the molecular characteristics of both MWL and DESL, as well as the visualization of the molecular structures.
 
