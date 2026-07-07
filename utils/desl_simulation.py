@@ -1,5 +1,6 @@
+import argparse
 from rdkit import Chem
-from rdkit.Chem import Descriptors
+from rdkit.Chem import Descriptors, Draw
 import random
 import pandas as pd
 from collections import Counter
@@ -20,9 +21,20 @@ Imports:
 
 This script is designed to help in the analysis and visualization of the molecular transformations involved in DESL formation from MWL.
 
+Sample command:
+python utils/desl_simulation.py --ether-cleavage 1.0 --image-out image/desl_output.png
+
+Parameter usage:
+- --smiles: Input MWL structure in SMILES format. If omitted, notebook default is used.
+- --ether-cleavage: Fraction of ether bonds to cleave (0.0 to 1.0).
+- --image-out: Optional image file path to save MWL vs DESL visualization.
+
 Author: Sudha Eswaran
 Date: 03/15/2024
 """
+
+
+DEFAULT_MWL_SMILES = "OC=1C=CC(=CC1OC)C(O)C(OC=2C=CC(=CC2OC)C(O)C(OC3=C(OC)C=C(C=C3C4=CC(=CC(OC)=C4OC(CO)C(O)C=5C=CC(OC(CO)C(O)C=6C=CC(O)=C(OC)C6)=C(OC)C5)C7OCC8C(OCC78)C9=CC(OC)=C%10OC(C%11=CC(OC)=C%12OC(C=%13C=CC(O)=C(OC)C%13)C(C%12=C%11)CO)C(C%10=C9)CO)C(O)C(OC=%14C=CC(=CC%14OC)C(O)C(OC=%15C=CC(=CC%15OC)C(O)C(OC=%16C=CC(=CC%16OC)C%17OCC%18C(OCC%17%18)C=%19C=CC(O)=C(OC)C%19)CO)CO)CO)CO)CO"
 
 
 def simulate_DES_deployermization(smile, ethercleavage):
@@ -283,3 +295,94 @@ def calculate_molecular_weight(smiles):
         return Descriptors.ExactMolWt(mol)
     else:
         return None
+
+
+def build_parser():
+    """Builds a command-line parser for running DESL simulation as a script."""
+    parser = argparse.ArgumentParser(
+        description=(
+            "Simulate decomposition of MWL into DESL fragments and print molecular metrics."
+        )
+    )
+    # Input polymer structure in SMILES form.
+    parser.add_argument(
+        "--smiles",
+        default=DEFAULT_MWL_SMILES,
+        help="Input MWL SMILES string (defaults to the notebook example).",
+    )
+    # Controls how aggressively ether linkages are broken during simulation.
+    parser.add_argument(
+        "--ether-cleavage",
+        type=float,
+        default=1.0,
+        help="Fraction of ether bonds to cleave (0.0 to 1.0). Default: 1.0",
+    )
+    # Optional output image path for side-by-side molecular visualization.
+    parser.add_argument(
+        "--image-out",
+        default="",
+        help="Optional path to save a comparison image (MWL vs DESL).",
+    )
+    return parser
+
+
+def main():
+    """Runs the same simulation workflow used in desl-simulation.ipynb."""
+    parser = build_parser()
+    args = parser.parse_args()
+
+    if not 0.0 <= args.ether_cleavage <= 1.0:
+        raise ValueError("--ether-cleavage must be between 0.0 and 1.0")
+
+    smile = args.smiles
+    mol = Chem.MolFromSmiles(smile)
+    if mol is None:
+        raise ValueError("Invalid input SMILES provided via --smiles")
+
+    canonical_smiles = Chem.CanonSmiles(smile)
+    molecular_weight = int(Descriptors.ExactMolWt(mol))
+    functional_groups = find_functional_groups_counts(smile)
+    pdi = round(calculate_pdi(smile)[2], 1)
+
+    print("\n\nDES Lignin : Simulation Model")
+    print("=============================\n")
+
+    print("\nINPUT")
+    print(f"Molecular structure of MWL (SMILES) : \n{canonical_smiles}")
+    print(f"\nMolecular weight (g/mol)           : {molecular_weight}")
+    print(f"\nFunctional group                   : {functional_groups}")
+    print(f"\nPoly dispersity index (PDI)        : {pdi}")
+
+    smi = simulate_DES_deployermization(smile, args.ether_cleavage)
+    mol_smi = Chem.MolFromSmiles(smi)
+
+    print("\nOUTPUT")
+    print(f"\nNumber of fragments  : {len(smi.split('.'))}")
+    print("\t" + "\n\t".join(smi.split('.')))
+    print(
+        f"\nTotal Molecular weight (g/mol) of all fragments: {int(Descriptors.ExactMolWt(mol_smi))}"
+    )
+    print(
+        f"\nFunctional group                                 : {find_functional_groups_counts(smi)}"
+    )
+    print(
+        f"\nPoly dispersity index (PDI)                      : {round(calculate_pdi(smi)[2], 1)}"
+    )
+
+    if args.image_out:
+        labels = [
+            "Molecular structure of MWL",
+            "Molecular structure after simulation (DESL)",
+        ]
+        grid = Draw.MolsToGridImage(
+            [mol, mol_smi],
+            molsPerRow=2,
+            subImgSize=(600, 600),
+            legends=labels,
+        )
+        grid.save(args.image_out)
+        print(f"\nSaved visualization image to: {args.image_out}")
+
+
+if __name__ == "__main__":
+    main()

@@ -46,15 +46,15 @@ You can use the attached `desl-simulation.ipynb` Jupyter Notebook to run the scr
    - If you open a new terminal or restart your computer, activate the environment before running Python or Jupyter commands:
      - On macOS/Linux:
        ```bash
-       source venv/bin/activate
+       source desenv/bin/activate
        ```
      - On Windows (Command Prompt):
        ```cmd
-       venv\Scripts\activate
+       desenv\Scripts\activate
        ```
      - On Windows (PowerShell):
        ```powershell
-       venv\Scripts\Activate.ps1
+       desenv\Scripts\Activate.ps1
        ```
 
 2. Start Jupyter Notebook:
@@ -63,17 +63,37 @@ You can use the attached `desl-simulation.ipynb` Jupyter Notebook to run the scr
    ```
    This will open the Jupyter interface in your web browser. Open `desl-simulation.ipynb` to begin.
 
-Alternatively, you can run the script directly in a Python environment by executing: `python your_script.py`
-This will display the molecular characteristics of both MWL and DESL, as well as the visualization of the molecular structures.
+Alternatively, you can run the script directly from the repository root:
 
-- Input:The input for the script is the SMILES string representing the MWL structure. You can modify the smile variable in the script with any valid SMILES string to simulate different lignin structures.
-- Output:
-  The script outputs the following:
-  SMILES string of the MWL and DESL structures.
-  Molecular weight of both MWL and DESL.
-  Count of functional groups in MWL and DESL.
-  Poly dispersity index (PDI) for MWL and DESL.
-  Visualization of MWL and DESL structures displayed as a grid image.
+```bash
+python utils/desl_simulation.py
+```
+
+Example with all parameters:
+
+```bash
+python utils/desl_simulation.py \
+  --smiles "COc1cc(CC(=O)CO)ccc1O" \
+  --ether-cleavage 1.0 \
+  --image-out image/desl_output.png
+```
+
+CLI parameters:
+
+- `--smiles`: Input MWL structure in SMILES format. If omitted, the notebook default structure is used.
+- `--ether-cleavage`: Fraction of ether bonds to cleave during simulation (`0.0` to `1.0`).
+- `--image-out`: Optional output path to save MWL vs DESL visualization.
+
+Output includes:
+
+- Canonical SMILES of input MWL.
+- Molecular weight of MWL.
+- Functional-group counts for MWL.
+- Poly dispersity index (PDI) for MWL.
+- Number of DESL fragments and each fragment SMILES.
+- Total molecular weight of DESL fragments.
+- Functional-group counts and PDI for DESL fragments.
+- Saved visualization image when `--image-out` is provided.
 
 **Example Output**
 
