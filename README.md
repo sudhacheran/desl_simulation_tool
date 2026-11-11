@@ -2,9 +2,9 @@
 
 This repository contains a rule-based model that simulates the decomposition of lignin (for example Milled Wood Lignin, MWL) into Deep Eutectic Solvent Lignin (DESL) fragments with RDKit. The model identifies β-O-4 and α-O-4 ether linkages by substructure matching, applies cleavage reactions to a user-set fraction of them, and reports molecular descriptors of the resulting fragments.
 
-The main script is `utils/desl_lignin_pathways.py`. The earlier script, `utils/desl_simulation.py`, is kept in the repository; the new script imports its functional-group counter.
+The main script is `utils/desl_lignin_pathways.py`. 
 
-> **The model is a scenario tool, not a predictor.** The extent of each reaction is an input chosen by the user. It is not calculated from time, temperature or DES composition. The ring-opening rules, the vanillin-type route and the route ratios are assumptions that have not been validated against experimental data (see [Assumptions and limitations](#assumptions-and-limitations)).
+> **The model is a scenario tool, not a predictor.** The extent of each reaction is an input chosen by the user. It is not calculated from time, temperature or DES composition. The ring-opening rules, the vanillin-type route and the route ratios are assumptions from literature (see [Assumptions and limitations](#assumptions-and-limitations)).
 
 ## Features
 
@@ -12,7 +12,7 @@ The main script is `utils/desl_lignin_pathways.py`. The earlier script, `utils/d
 - **Rule-based cleavage:** optional hydrolysis of α-O-4 ethers, then β-O-4 cleavage with a seeded random choice between three product routes.
 - **Mass-balance check** after every reaction event.
 - **Molecular descriptors:** formula-based Mn, Mw and PDI, functional-group counts, and total OH content, with an optional molecular-weight cutoff that splits precipitated and soluble fractions.
-- **Dataset generation:** runs the model over many `.mol` structures and writes a CSV.
+- **Dataset generation:** retrieves the lignin structures from the LGS dataset and runs the model over them, writing one row per structure to a CSV.
 - **Reaction schemes and workflow figures** drawn from the script's own reactions.
 
 ## Reactions, in the order they are applied
@@ -99,7 +99,7 @@ jupyter notebook
 
 ### Generating a dataset
 
-`data_analysis/generate_desl_dataset.py` runs the model on every `.mol` file in `data_analysis/mol/<dp>/` and writes one row per structure:
+`data_analysis/generate_desl_dataset.py` runs the model on lignin structures from the LGS dataset and writes one row per structure. **The LGS structures are not included in this repository.** Obtain the LGS dataset from its source ([add the LGS dataset reference or link here]) and place its `.mol` files in `data_analysis/mol/<dp>/`, one folder per degree of polymerization (DP). The script then reads the folders from `--dp-min` to `--dp-max`:
 
 ```bash
 python data_analysis/generate_desl_dataset.py --dp-min 18 --dp-max 25 \
