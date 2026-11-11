@@ -55,3 +55,8 @@ image/README/
 
 # Ignore requirements.txt lock files
 requirements*.lock
+
+/data_analysis/mol/
+/image/toc*.*
+updates.md
+*.txt
