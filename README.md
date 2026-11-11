@@ -1,10 +1,10 @@
 # DES Lignin Simulation Tool
 
-This repository contains a rule-based model that simulates the decomposition of lignin (for example Milled Wood Lignin, MWL) into Deep Eutectic Solvent Lignin (DESL) fragments with RDKit. The model identifies β-O-4 and α-O-4 ether linkages by substructure matching, applies cleavage reactions to a user-set fraction of them, and reports molecular descriptors of the resulting fragments.
+This repository contains a rule-based model that simulates the conversion of lignin (for example, Milled Wood Lignin, MWL) into Deep Eutectic Solvent Lignin (DESL) fragments using RDKit. The model identifies β-O-4 and α-O-4 ether linkages by substructure matching, applies cleavage reactions to a user-set fraction of them, and reports molecular descriptors of the resulting fragments.
 
 The main script is `utils/desl_lignin_pathways.py`. 
 
-> **The model is a scenario tool, not a predictor.** The extent of each reaction is an input chosen by the user. It is not calculated from time, temperature or DES composition. The ring-opening rules, the vanillin-type route and the route ratios are assumptions from literature (see [Assumptions and limitations](#assumptions-and-limitations)).
+> **The model is a scenario tool, not a predictor.** The extent of each reaction is an input chosen by the user based on experimental observation. The ring-opening rules, vanillin-type route, and route ratios are assumptions from the literature (see [Assumptions and limitations](#assumptions-and-limitations)).
 
 ## Features
 
@@ -143,21 +143,19 @@ Normalized beta-O-4 route weights (Hibbert / C2-aldehyde / vanillin): 0.58 / 0.4
 Randomly assigned beta-O-4 products: 4 Hibbert-type, 1 C2-aldehyde, 0 vanillin-hypothesis
 Actual route shares of cleaved sites: 80.0% Hibbert, 20.0% C2-aldehyde, 0.0% vanillin
 C2-aldehyde route releases formaldehyde and is an assumed route distribution, not a measured one.
-Optional phenylcoumaran and DBDO-like ring opening are unvalidated hypotheses.
-Reaction time is metadata; cleavage fraction is not kinetically predicted.
-Water is not a reactant in the beta-O-4 net-reaction template.
-The solvent's effects and any catalytic role of lactic-acid acidity are not modeled.
+Phenylcoumaran and DBDO-like ring opening are assumptions based on literature.
+Reaction time is metadata. Water is not a reactant in the beta-O-4 net-reaction template.
 Condensation/repolymerization is not modeled.
 
 INPUT
 Molecular structure (SMILES) : 
 COc1cc(C(O)C(CO)Oc2ccc(C(O)C(CO)Oc3ccc(C(O)C(CO)Oc4ccc(C(O)C(CO)Oc5ccc(C(O)C(CO)Oc6ccc(C7OCC8C(c9cc(OC)c%10c(c9)-c9cc(C%11OCC%12C(c%13cc(OC)c%14c(c%13)C(CO)C(c%13ccc(OC(CO)C(O)c%15ccc(O)c(OC)c%15)c(OC)c%13)O%14)OCC%11%12)cc(OC)c9OC(CO)C(c9cc(OC)c%11c(c9)C(CO)C(c9ccc(O)c(OC)c9)O%11)O%10)OCC78)cc6OC)cc5OC)cc4OC)cc3OC)cc2OC)ccc1O
 
-Molecular weight (g/mol)           : 2424
+Molecular weight (g/mol)          : 2424
 
-Functional group                   : {'ether': 10, 'carbonyl': 0, 'methoxy': 13, 'phenolicOH': 3, 'aliphaticOH_secondary': 6, 'aliphaticOH_primary': 9, 'cinnamyl_alcohol': 0}
+Functional group                  : {'ether': 10, 'carbonyl': 0, 'methoxy': 13, 'phenolicOH': 3, 'aliphaticOH_secondary': 6, 'aliphaticOH_primary': 9, 'cinnamyl_alcohol': 0}
 
-Poly dispersity index (PDI)        : 1.0
+Poly dispersity index (PDI)       : 1.0
 
 OUTPUT
 Water molecules added by hydrolysis steps: 0 (+0.0 g/mol; input 2424.9 + water = 2424.9)
@@ -165,7 +163,7 @@ No precipitation cutoff set; all generated fragments are reported.
 
 All simulated fragments
 
-Number of fragments  : 7
+Number of fragments : 7
 	C=O
 	COc1cc(C(O)C(CO)Oc2ccc(C3Oc4c(OC)cc(C5OCC6C(c7cc(OC)c8c(c7)-c7cc(C9OCC%10C(c%11ccc(O)c(OC)c%11)OCC9%10)cc(OC) ... (shortened)
 	COc1cc(CC(=O)CO)ccc1O
@@ -176,13 +174,13 @@ Number of fragments  : 7
 
 Total Molecular weight (g/mol) of all fragments: 2424
 
-Functional group                                 : {'ether': 5, 'carbonyl': 6, 'methoxy': 13, 'phenolicOH': 8, 'aliphaticOH_secondary': 1, 'aliphaticOH_primary': 8, 'cinnamyl_alcohol': 0}
+Functional group     		: {'ether': 5, 'carbonyl': 6, 'methoxy': 13, 'phenolicOH': 8, 'aliphaticOH_secondary': 1, 'aliphaticOH_primary': 8, 'cinnamyl_alcohol': 0}
 
-Poly dispersity index (PDI)                      : 2.7
+Poly dispersity index (PDI) : 2.7
 
-Mn / Mw (Da), formula-based                      : 346.41 / 935.68
+Mn / Mw (Da), formula-based : 346.41 / 935.68
 
-Total OH (mmol/g, not a 31P NMR prediction)      : 7.01
+Total OH (mmol/g, not a 31P NMR prediction) : 7.01
 ```
 
 ## Figures
