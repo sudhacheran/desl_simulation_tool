@@ -192,10 +192,6 @@ Total OH (mmol/g, not a 31P NMR prediction) : 7.01
 
 ## Figures
 
-Workflow of the model, from `desl-reaction-scheme.ipynb`:
-
-![Workflow](image/workflow.png)
-
 Reactions coded in the script, each on a model compound:
 
 ![Reaction scheme](image/reaction_scheme.png)
