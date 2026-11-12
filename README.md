@@ -4,7 +4,7 @@ This repository contains a rule-based model that simulates the conversion of lig
 
 The main script is `utils/desl_lignin_pathways.py`. 
 
-**Datasets:** the simulated DESL datasets are in [data_analysis/datasets/](https://github.com/sudhacheran/desl_simulation_tool/tree/main/data_analysis/datasets) (see [Generated datasets](#generated-datasets) for what each file contains).
+**Datasets:** the simulated DESL datasets are in [data_analysis/datasets/](https://github.com/sudhacheran/desl_simulation_tool/tree/main/data_analysis/datasets).
 
 > **The model is a scenario tool, not a predictor.** The extent of each reaction is an input chosen by the user based on experimental observation. The ring-opening rules, vanillin-type route, and route ratios are assumptions from the literature (see [Assumptions and limitations](#assumptions-and-limitations)).
 
@@ -91,8 +91,6 @@ CLI parameters:
 Start Jupyter from the activated environment and open one of:
 
 - `desl-lignin-pathways.ipynb`: runs the pathway model on one structure.
-- `desl-reaction-scheme.ipynb`: workflow, a worked example with a DP = 4 compound, and the reaction schemes.
-- `desl-simulation.ipynb`: the earlier notebook for `utils/desl_simulation.py`.
 - `data_analysis/desl_analysis.ipynb`: plots of a generated dataset.
 
 ```bash
@@ -125,11 +123,6 @@ The datasets generated with the model are in [data_analysis/datasets/](data_anal
 
 The analysis notebook [data_analysis/desl_analysis.ipynb](data_analysis/desl_analysis.ipynb) reads these files and saves its figures in [data_analysis/charts/](data_analysis/charts/).
 
-### Drawing the reaction schemes
-
-```bash
-python data_analysis/draw_reaction_scheme.py --out image/reaction_scheme.png
-```
 
 ## Output includes
 
