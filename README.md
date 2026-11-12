@@ -4,7 +4,7 @@ This repository contains a rule-based model that simulates the conversion of lig
 
 The main script is `utils/desl_lignin_pathways.py`. 
 
-**Datasets:** the simulated DESL datasets are in [data_analysis/datasets/](https://github.com/sudhacheran/desl_simulation_tool/tree/main/data_analysis/datasets) (see [Generated datasets](#generated-datasets) for what each file contains).
+**Datasets:** the simulated DESL datasets are in [data_analysis/datasets/](https://github.com/sudhacheran/desl_simulation_tool/tree/main/data_analysis/datasets).
 
 > **The model is a scenario tool, not a predictor.** The extent of each reaction is an input chosen by the user based on experimental observation. The ring-opening rules, vanillin-type route, and route ratios are assumptions from the literature (see [Assumptions and limitations](#assumptions-and-limitations)).
 
@@ -91,8 +91,6 @@ CLI parameters:
 Start Jupyter from the activated environment and open one of:
 
 - `desl-lignin-pathways.ipynb`: runs the pathway model on one structure.
-- `desl-reaction-scheme.ipynb`: workflow, a worked example with a DP = 4 compound, and the reaction schemes.
-- `desl-simulation.ipynb`: the earlier notebook for `utils/desl_simulation.py`.
 - `data_analysis/desl_analysis.ipynb`: plots of a generated dataset.
 
 ```bash
@@ -107,16 +105,24 @@ jupyter notebook
 python data_analysis/generate_desl_dataset.py --dp-min 18 --dp-max 25 \
   --cleavage-fraction 1.0 --alpha-o4-cleavage-fraction 1.0 \
   --acyclic-alpha-o4-cleavage-fraction 1.0 --dbdo-cleavage-fraction 1.0 \
-  --out data_analysis/df_data_desl_pathways_100.csv
+  --out data_analysis/datasets/df_data_desl_pathways_100.csv
 ```
 
 Its defaults are cleavage 0.8, 0.5 for the three optional hydrolyses and the route weights above. Repeated input structures are skipped unless `--keep-duplicates` is given. All files use the same random seed unless it is changed.
 
-### Drawing the reaction schemes
+### Generated datasets
 
-```bash
-python data_analysis/draw_reaction_scheme.py --out image/reaction_scheme.png
-```
+The datasets generated with the model are in [data_analysis/datasets/](data_analysis/datasets/). Each has one row per LGS structure (DP 15-25, 4,411 structures) with the simulated product mixture (`smiles`), formula-based masses and PDI, and functional-group counts. All use the default route weights (0.57 / 0.40 / 0.02) and random seed.
+
+| File | β-O-4 cleavage | Acyclic α-O-4, DBDO and phenylcoumaran hydrolyses |
+|---|---|---|
+| [df_data_desl_pathways_dp15_25.csv](data_analysis/datasets/df_data_desl_pathways_dp15_25.csv) | 0.8 | 0.5 |
+| [df_data_desl_pathways_dp15_25_cleave90_rings100.csv](data_analysis/datasets/df_data_desl_pathways_dp15_25_cleave90_rings100.csv) | 0.9 | 1.0 |
+| [df_data_desl_pathways_dp15_25_100.csv](data_analysis/datasets/df_data_desl_pathways_dp15_25_100.csv) | 1.0 | 1.0 |
+| [unique_products_dp15_25.csv](data_analysis/datasets/unique_products_dp15_25.csv) | the 1,213 unique products found in the first file (made with `data_analysis/extract_unique_products.py`) | |
+
+The analysis notebook [data_analysis/desl_analysis.ipynb](data_analysis/desl_analysis.ipynb) reads these files and saves its figures in [data_analysis/charts/](data_analysis/charts/).
+
 
 ## Output includes
 
@@ -181,7 +187,6 @@ Functional group     		: {'ether': 5, 'carbonyl': 6, 'methoxy': 13, 'phenolicOH'
 Poly dispersity index (PDI) : 2.7
 
 Mn / Mw (Da), formula-based : 346.41 / 935.68
-
 Total OH (mmol/g, not a 31P NMR prediction) : 7.01
 ```
 

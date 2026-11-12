@@ -7,14 +7,15 @@ Transformations run in this order:
 3. Optional hydrolysis of five-membered phenylcoumaran cyclic ethers.
 4. Beta-O-4 cleavage, with each cleaved site randomly assigned to the
    Hibbert-ketone route, the C2-aldehyde route (formaldehyde loss), or an
-   optional vanillin-type hypothesis, using normalized route weights.
+   optional vanillin-type pathway, using normalized route weights.
 
-All alpha-O-4 and DBDO ring-opening rules are unvalidated and disabled by
-default. Cleavage fractions and route weights are scenario inputs, not kinetic
-predictions; the default weights (0.57 / 0.40 / 0.02) are unverified product
-shares used as per-site probabilities. The vanillin hypothesis includes phenol
-and acetaldehyde coproducts for atom balance and is not established by the
-cited DES study.
+The alpha-O-4 and DBDO ring-opening rules are assumptions based on literature
+and are disabled by default. Cleavage fractions and route weights are scenario
+inputs, not kinetic predictions; the default weights (0.57 / 0.40 / 0.02) are
+assumptions based on literature product patterns, used as per-site
+probabilities. The vanillin-type pathway is included as a low-frequency
+pathway, an assumption based on literature reports of vanillin as a minor
+product; it includes phenol and acetaldehyde coproducts for atom balance.
 
 The optional molecular-weight precipitation cutoff is a coarse partition
 model, not a measured solubility model. Formula-based Mn/Mw/PDI and total-OH
@@ -59,8 +60,8 @@ NO_GAMMA_ALDEHYDE_SMARTS = (
     ">>"
     "[c:1]-[CH2:2]-[CH:4]=[O:3].[c:6]-[OH:5]"
 )
-# Default beta-O-4 route weights (Hibbert, C2-aldehyde, vanillin-type). Unverified
-# scenario values, normalized before use.
+# Default beta-O-4 route weights (Hibbert, C2-aldehyde, vanillin-type): assumptions
+# based on literature, normalized before use.
 DEFAULT_ROUTE_WEIGHTS = (0.57, 0.40, 0.02)
 ACYCLIC_ALPHA_O4_QUERY_SMARTS = "[c:1]-[C:2]-[O:3]-[c:4]"
 PHENYLCOUMARAN_ALPHA_O4_QUERY_SMARTS = "[c:1]-[CH:2]([O:3]-[c:4])-[C:5]"
@@ -107,8 +108,9 @@ def build_parser():
     """Build the CLI parser for input structure and assumed model settings."""
     parser = argparse.ArgumentParser(
         description=(
-            "Apply optional alpha-O-4 hydrolysis hypotheses followed by "
-            "beta-O-4 cleavage with selectable Hibbert or vanillin-type products."
+            "Apply optional alpha-O-4 hydrolysis (an assumption based on literature) "
+            "followed by beta-O-4 cleavage with selectable Hibbert, C2-aldehyde or "
+            "vanillin-type products."
         )
     )
     parser.add_argument(
@@ -132,7 +134,7 @@ def build_parser():
         help=(
             "Weight of the Hibbert-ketone route per cleaved beta-O-4 site "
             "(default: 0.57). Route weights are normalized to sum to 1; "
-            "unverified scenario values."
+            "assumptions based on literature."
         ),
     )
     parser.add_argument(
@@ -141,7 +143,7 @@ def build_parser():
         default=None,
         help=(
             "Weight of the C2-aldehyde route with formaldehyde loss "
-            "(default: 0.40; unverified scenario value)."
+            "(default: 0.40; assumption based on literature)."
         ),
     )
     parser.add_argument(
@@ -149,8 +151,9 @@ def build_parser():
         type=float,
         default=None,
         help=(
-            "Weight of the vanillin-type hypothesis (default: 0.02; predicts "
-            "phenol and acetaldehyde too; not established)."
+            "Weight of the vanillin-type pathway (default: 0.02; low-frequency "
+            "pathway, an assumption based on literature; also gives phenol and "
+            "acetaldehyde)."
         ),
     )
     parser.add_argument(
@@ -158,7 +161,7 @@ def build_parser():
         type=float,
         default=None,
         help=(
-            "Legacy option: probability of the vanillin hypothesis, Hibbert "
+            "Legacy option: probability of the vanillin-type pathway, Hibbert "
             "otherwise, no C2-aldehyde. Cannot be combined with --p-* options."
         ),
     )
@@ -173,7 +176,7 @@ def build_parser():
         type=float,
         default=0.0,
         help=(
-            "Unvalidated fraction of phenylcoumaran alpha-O-4 rings to hydrolyze "
+            "Fraction of phenylcoumaran alpha-O-4 rings to hydrolyze (assumption based on literature) "
             "(default: 0; targets five-membered rings; consumes water)."
         ),
     )
@@ -182,7 +185,7 @@ def build_parser():
         type=float,
         default=0.0,
         help=(
-            "Unvalidated fraction of non-ring alpha-O-4 aryl ethers to hydrolyze "
+            "Fraction of non-ring alpha-O-4 aryl ethers to hydrolyze (assumption based on literature) "
             "(default: 0; consumes water)."
         ),
     )
@@ -191,8 +194,9 @@ def build_parser():
         type=float,
         default=0.0,
         help=(
-            "Unvalidated fraction of eight-membered DBDO-like alpha-O-4 rings "
-            "to hydrolyze (default: 0; ring-composition filter; consumes water)."
+            "Fraction of eight-membered DBDO-like alpha-O-4 rings to hydrolyze "
+            "(assumption based on literature; default: 0; ring-composition filter; "
+            "consumes water)."
         ),
     )
     parser.add_argument(
@@ -404,26 +408,29 @@ def apply_acidolysis(
 
     Processing order is acyclic alpha-O-4 hydrolysis, DBDO-like ring opening,
     phenylcoumaran ring opening, then beta-O-4 cleavage. For each cleaved
-    beta-O-4 site, a seeded random draw selects the vanillin hypothesis, the
+    beta-O-4 site, a seeded random draw selects the vanillin-type pathway, the
     C2-aldehyde route (formaldehyde loss), or the Hibbert route using the
     normalized route weights. The vanillin route includes phenol and
-    acetaldehyde coproducts and is unvalidated. Site selection follows RDKit
+    acetaldehyde coproducts (an assumption based on literature). Site selection follows RDKit
     match order, not measured kinetics.
 
     Args:
         smiles: Input lignin or model-compound SMILES.
         cleavage_fraction: Assumed fraction of post-ring-opening beta-O-4 sites.
         vanillin_branch_fraction: Legacy setting used only when route_weights is
-            None: probability of the vanillin hypothesis, Hibbert otherwise.
+            None: probability of the vanillin-type pathway, Hibbert otherwise.
         route_weights: Optional (hibbert, c2_aldehyde, vanillin) weights, normalized
-            internally. Unverified scenario values.
+            internally. Assumptions based on literature.
         random_seed: Seed used to make pathway draws reproducible.
         acyclic_alpha_o4_cleavage_fraction: Assumed fraction of non-ring alpha-O-4
-            aryl ethers to hydrolyze. This unvalidated pathway consumes water.
+            aryl ethers to hydrolyze. This pathway is an assumption based on literature
+            and consumes water.
         alpha_o4_cleavage_fraction: Assumed fraction of matching phenylcoumaran
-            rings to hydrolyze. This pathway is unvalidated and water-consuming.
+            rings to hydrolyze. This pathway is an assumption based on literature and
+            consumes water.
         dbdo_cleavage_fraction: Assumed fraction of matching DBDO-like rings to
-            hydrolyze. This pathway is unvalidated and water-consuming.
+            hydrolyze. This pathway is an assumption based on literature and consumes
+            water.
 
     Returns:
         A tuple containing one tuple of product SMILES and the matched/applied
@@ -744,7 +751,7 @@ def main():
             actual_acyclic_fraction = (
                 acyclic_alpha_cleavage_count / acyclic_alpha_site_count
             )
-            print("Additional event: acyclic alpha-O-4 hydrolysis hypothesis")
+            print("Additional event: acyclic alpha-O-4 hydrolysis (assumption based on literature)")
             print(
                 "Requested acyclic alpha-O-4 cleavage fraction: "
                 f"{args.acyclic_alpha_o4_cleavage_fraction:.0%}"
@@ -754,7 +761,7 @@ def main():
                 f"{acyclic_alpha_cleavage_count}/{acyclic_alpha_site_count} "
                 f"({actual_acyclic_fraction:.1%})"
             )
-            print("Acyclic alpha-O-4 hydrolysis is unvalidated; water is consumed.")
+            print("Acyclic alpha-O-4 hydrolysis is an assumption based on literature; water is consumed.")
         else:
             print("No acyclic alpha-O-4 ether matches; optional cleavage skipped.")
     actual_fraction = cleavage_count / site_count if site_count else 0.0
@@ -766,11 +773,11 @@ def main():
     print(
         "Normalized beta-O-4 route weights (Hibbert / C2-aldehyde / vanillin): "
         f"{route_weights[0]:.2f} / {route_weights[1]:.2f} / {route_weights[2]:.2f} "
-        "(unverified scenario values)"
+        "(assumptions based on literature)"
     )
     print(
         f"Randomly assigned beta-O-4 products: {hibbert_count} Hibbert-type, "
-        f"{c2_count} C2-aldehyde, {vanillin_count} vanillin-hypothesis"
+        f"{c2_count} C2-aldehyde, {vanillin_count} vanillin-type"
     )
     if cleavage_count:
         print(
@@ -782,19 +789,19 @@ def main():
     if no_gamma_site_count:
         print(
             "Beta-O-4 units without gamma-CH2OH cleaved to aryl-acetaldehyde + phenol: "
-            f"{no_gamma_cleavage_count}/{no_gamma_site_count} (assumed route, unvalidated)"
+            f"{no_gamma_cleavage_count}/{no_gamma_site_count} (assumed route based on literature)"
         )
     if c2_count:
         print(
-            "C2-aldehyde route releases formaldehyde and is an assumed route "
-            "distribution, not a measured one."
+            "C2-aldehyde route releases formaldehyde; its ratio is an assumption "
+            "based on literature."
         )
     if vanillin_count:
         print(
-            "Vanillin route is unvalidated and assumes phenol plus acetaldehyde "
-            "coproducts."
+            "Vanillin-type route is a low-frequency pathway (an assumption based on "
+            "literature) and gives phenol plus acetaldehyde coproducts for atom balance."
         )
-    print("Optional phenylcoumaran and DBDO-like ring opening are unvalidated hypotheses.")
+    print("Optional phenylcoumaran and DBDO-like ring opening are assumptions based on literature.")
     if args.alpha_o4_cleavage_fraction > 0.0:
         if alpha_site_count:
             actual_alpha_fraction = alpha_cleavage_count / alpha_site_count
@@ -817,12 +824,12 @@ def main():
                 f"{dbdo_cleavage_count}/{dbdo_site_count} "
                 f"({actual_dbdo_fraction:.1%})"
             )
-            print("DBDO-like opening is an unvalidated hypothesis; one water is consumed per event.")
+            print("DBDO-like opening is an assumption based on literature; one water is consumed per event.")
         else:
             print("No DBDO-like rings matched; optional cleavage skipped.")
     print("Reaction time is metadata; cleavage fraction is not kinetically predicted.")
     if acyclic_alpha_cleavage_count or alpha_cleavage_count or dbdo_cleavage_count:
-        print("Water is consumed by the selected alpha-O-4 hydrolysis hypotheses.")
+        print("Water is consumed by the selected alpha-O-4 hydrolysis steps.")
     else:
         print("Water is not a reactant in the beta-O-4 net-reaction template.")
     print("The solvent's effects and any catalytic role of lactic-acid acidity are not modeled.")
@@ -871,7 +878,7 @@ def main():
         )
         print(
             f"Illustrative precipitation cutoff: {args.min_precipitate_mw:g} Da "
-            "(not experimentally calibrated)"
+            "(assumed value)"
         )
         print(
             f"Modeled recovered mass fraction: {recovered_fraction:.1%} "
