@@ -4,6 +4,8 @@ This repository contains a rule-based model that simulates the conversion of lig
 
 The main script is `utils/desl_lignin_pathways.py`. 
 
+**Datasets:** the simulated DESL datasets are in [data_analysis/datasets/](https://github.com/sudhacheran/desl_simulation_tool/tree/main/data_analysis/datasets) (see [Generated datasets](#generated-datasets) for what each file contains).
+
 > **The model is a scenario tool, not a predictor.** The extent of each reaction is an input chosen by the user based on experimental observation. The ring-opening rules, vanillin-type route, and route ratios are assumptions from the literature (see [Assumptions and limitations](#assumptions-and-limitations)).
 
 ## Features
