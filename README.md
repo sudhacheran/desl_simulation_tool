@@ -206,7 +206,7 @@ Reactions coded in the script, each on a model compound:
 - The α-O-4 and ring-opening hydrolyses, the vanillin-type route (its acetaldehyde balances atoms and is not an observed product) and the route ratios are unvalidated hypotheses.
 - Not modeled: condensation or repolymerization, cleavage of β-β, β-5, 5-5 or 4-O-5 linkages, Cα oxidation, solvent effects, and solubility.
 - Mn, Mw, PDI and OH content are calculated from molecular formulas and are not GPC or ³¹P NMR values. The total fragment mass equals the input mass plus one water (18.011 g/mol) per ring-opening event.
-- The model has not been validated against experimental data.
+
 
 <hr/>
 Feel free to fork this repository, submit issues, or send pull requests to improve the simulation and the overall functionality of the script.
