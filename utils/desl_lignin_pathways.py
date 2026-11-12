@@ -42,7 +42,7 @@ HIBBERT_KETONE_SMARTS = (
     ">>"
     "[c:1]-[CH2:2]-[C:4](=[O:3])-[CH2:7][OH:8].[c:6]-[OH:5]"
 )
-VANILLIN_HYPOTHESIS_SMARTS = (
+VANILLIN_TYPE_SMARTS = (
     "[c:1]-[CH:2]([OH:3])-[CH:4]([O:5]-[c:6])-[CH2:7][OH:8]"
     ">>"
     "[c:1]-[CH:2]=[O:3].[c:6]-[OH:5].[CH3:7]-[CH:4]=[O:8]"
@@ -492,7 +492,7 @@ def apply_acidolysis(
     for _ in range(cleavage_count):
         draw = random_generator.random()
         if draw < vanillin_weight:
-            reaction_smarts = VANILLIN_HYPOTHESIS_SMARTS
+            reaction_smarts = VANILLIN_TYPE_SMARTS
             pathway_name = "vanillin-type pathway"
             vanillin_count += 1
         elif draw < vanillin_weight + c2_weight:
