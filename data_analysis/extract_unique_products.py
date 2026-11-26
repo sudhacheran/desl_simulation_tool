@@ -7,8 +7,8 @@ mass, total number of occurrences, and number of dataset rows that contain it.
 
 Sample command:
 python data_analysis/extract_unique_products.py \
-    --in data_analysis/df_data_desl_pathways_dp15_25.csv \
-    --out data_analysis/unique_products_dp15_25.csv
+    --in data_analysis/datasets/df_data_desl_pathways_dp15_25_cleave90_rings100.csv \
+    --out data_analysis/datasets/unique_products_dp15_25_cleave90_rings100.csv
 """
 
 import argparse
