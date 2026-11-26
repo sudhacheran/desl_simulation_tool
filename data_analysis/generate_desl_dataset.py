@@ -13,6 +13,7 @@ python data_analysis/generate_desl_dataset.py --dp-min 15 --dp-max 25 \
 """
 
 import argparse
+import random
 import sys
 from pathlib import Path
 
@@ -73,6 +74,9 @@ def main():
     except ValueError as error:
         parser.error(str(error))
     RDLogger.DisableLog("rdApp.*")
+    # One generator for the whole run: re-seeding per structure would give every
+    # structure the same draw sequence (and, for seed 10, no vanillin events).
+    random_generator = random.Random(args.random_seed)
     rows, skipped, seen = [], [], set()
     duplicate_inputs = 0
 
@@ -98,7 +102,7 @@ def main():
                     smiles_in,
                     cleavage_fraction=args.cleavage_fraction,
                     route_weights=route_weights,
-                    random_seed=args.random_seed,
+                    random_generator=random_generator,
                     acyclic_alpha_o4_cleavage_fraction=args.acyclic_alpha_o4_cleavage_fraction,
                     alpha_o4_cleavage_fraction=args.alpha_o4_cleavage_fraction,
                     dbdo_cleavage_fraction=args.dbdo_cleavage_fraction,

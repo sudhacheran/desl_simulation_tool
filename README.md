@@ -112,14 +112,13 @@ Its defaults are cleavage 0.8, 0.5 for the three optional hydrolyses and the rou
 
 ### Generated datasets
 
-The datasets generated with the model are in [data_analysis/datasets/](data_analysis/datasets/). Each has one row per LGS structure (DP 15-25, 4,411 structures) with the simulated product mixture (`smiles`), formula-based masses and PDI, and functional-group counts. All use the default route weights (0.57 / 0.40 / 0.02) and random seed.
+The datasets generated with the model are in [data_analysis/datasets/](data_analysis/datasets/). They cover the LGS structures with DP 15-25 (4,411 structures) and use 0.9 β-O-4 cleavage, 1.0 acyclic α-O-4, DBDO and phenylcoumaran hydrolyses, and the default route weights (0.57 / 0.40 / 0.02) and random seed. See [data_analysis/datasets/README.md](data_analysis/datasets/README.md) for full details.
 
-| File | β-O-4 cleavage | Acyclic α-O-4, DBDO and phenylcoumaran hydrolyses |
+| File | Rows | Description |
 |---|---|---|
-| [df_data_desl_pathways_dp15_25.csv](data_analysis/datasets/df_data_desl_pathways_dp15_25.csv) | 0.8 | 0.5 |
-| [df_data_desl_pathways_dp15_25_cleave90_rings100.csv](data_analysis/datasets/df_data_desl_pathways_dp15_25_cleave90_rings100.csv) | 0.9 | 1.0 |
-| [df_data_desl_pathways_dp15_25_100.csv](data_analysis/datasets/df_data_desl_pathways_dp15_25_100.csv) | 1.0 | 1.0 |
-| [unique_products_dp15_25.csv](data_analysis/datasets/unique_products_dp15_25.csv) | the 1,213 unique products found in the first file (made with `data_analysis/extract_unique_products.py`) | |
+| [df_data_desl_pathways_dp15_25_cleave90_rings100.csv](data_analysis/datasets/df_data_desl_pathways_dp15_25_cleave90_rings100.csv) | 4,411 | One row per LGS structure with the simulated product mixture (`smiles`), formula-based masses and PDI, and functional-group counts |
+| [df_data_desl_pathways_dp15_25_cleave90_rings100_cutoff350.csv](data_analysis/datasets/df_data_desl_pathways_dp15_25_cleave90_rings100_cutoff350.csv) | 4,411 | The same mixtures keeping only fragments of at least 350 g/mol, the approximate precipitated DESL fraction (made with `data_analysis/apply_mass_cutoff.py`) |
+| [unique_products_dp15_25_cleave90_rings100.csv](data_analysis/datasets/unique_products_dp15_25_cleave90_rings100.csv) | 482 | The unique products found in the first file (made with `data_analysis/extract_unique_products.py`) |
 
 The analysis notebook [data_analysis/desl_analysis.ipynb](data_analysis/desl_analysis.ipynb) reads these files and saves its figures in [data_analysis/charts/](data_analysis/charts/).
 
