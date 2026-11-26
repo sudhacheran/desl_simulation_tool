@@ -403,6 +403,7 @@ def apply_acidolysis(
     alpha_o4_cleavage_fraction=0.0,
     dbdo_cleavage_fraction=0.0,
     route_weights=None,
+    random_generator=None,
 ):
     """Apply optional ring openings, then beta-O-4 cleavage, to a SMILES input.
 
@@ -421,7 +422,11 @@ def apply_acidolysis(
             None: probability of the vanillin-type pathway, Hibbert otherwise.
         route_weights: Optional (hibbert, c2_aldehyde, vanillin) weights, normalized
             internally. Assumptions based on literature.
-        random_seed: Seed used to make pathway draws reproducible.
+        random_seed: Seed used to make pathway draws reproducible. Ignored when
+            random_generator is given.
+        random_generator: Optional random.Random shared across calls. Pass one
+            generator per batch run so draws continue from structure to
+            structure instead of restarting from the same seed each time.
         acyclic_alpha_o4_cleavage_fraction: Assumed fraction of non-ring alpha-O-4
             aryl ethers to hydrolyze. This pathway is an assumption based on literature
             and consumes water.
@@ -485,7 +490,8 @@ def apply_acidolysis(
     )
 
     cleavage_count = int(site_count * cleavage_fraction + 0.5)
-    random_generator = random.Random(random_seed)
+    if random_generator is None:
+        random_generator = random.Random(random_seed)
     vanillin_count = 0
     hibbert_count = 0
     c2_count = 0

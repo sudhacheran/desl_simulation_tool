@@ -30,6 +30,6 @@ The datasets generated with the model are in [datasets/](datasets/). Each has on
 | [df_data_desl_pathways_dp15_25.csv](datasets/df_data_desl_pathways_dp15_25.csv) | 0.8 | 0.5 |
 | [df_data_desl_pathways_dp15_25_cleave90_rings100.csv](datasets/df_data_desl_pathways_dp15_25_cleave90_rings100.csv) | 0.9 | 1.0 |
 | [df_data_desl_pathways_dp15_25_100.csv](datasets/df_data_desl_pathways_dp15_25_100.csv) | 1.0 | 1.0 |
-| [unique_products_dp15_25.csv](datasets/unique_products_dp15_25.csv) | the 1,213 unique products found in the first file (made with `data_analysis/extract_unique_products.py`) | |
+| [unique_products_dp15_25.csv](datasets/unique_products_dp15_25.csv) | the 1,295 unique products found in the first file (made with `data_analysis/extract_unique_products.py`) | |
 
 The analysis notebook [desl_analysis.ipynb](desl_analysis.ipynb) reads these files and saves its figures in [charts/](charts/).
